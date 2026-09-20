@@ -1,0 +1,15 @@
+{
+  "status": "synthetic_demo",
+  "warning": "Synthetic data only; results are a pipeline smoke test, not a trading claim.",
+  "engle_granger": {
+    "intercept": 1.4121753853466876,
+    "beta": 1.2505954235386527,
+    "adf_t_stat": -29.818521836466687
+  },
+  "kalman_final_beta": 1.264690913246501,
+  "backtest": {
+    "total_return": 0.6178442919815861,
+    "turnover": 60.0,
+    "trades": 60
+  }
+}

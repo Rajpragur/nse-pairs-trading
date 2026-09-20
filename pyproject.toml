@@ -1,0 +1,10 @@
+[project]
+name = "nse-pairs-trading"
+version = "0.1.0"
+description = "C++20 and Python research stack for walk-forward NSE pairs trading"
+requires-python = ">=3.11"
+dependencies = ["numpy>=1.24", "pandas>=2.0"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
