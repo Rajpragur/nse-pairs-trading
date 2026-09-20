@@ -1,8 +1,10 @@
 import numpy as np
 import pandas as pd
 
+from pairs_trading.data import load_long_ohlcv, pair_close
 from pairs_trading.models import engle_granger, kalman_hedge_ratio
 from pairs_trading.strategy import backtest_spread, rolling_zscore
+from pairs_trading.walkforward import PairWindow, split_windows
 
 
 def test_engle_granger_recovers_cointegrating_beta():
