@@ -3,7 +3,7 @@ name = "nse-pairs-trading"
 version = "0.1.0"
 description = "C++20 and Python research stack for walk-forward NSE pairs trading"
 requires-python = ">=3.11"
-dependencies = ["numpy>=1.26", "pandas>=2.1", "pyarrow>=14", "python-dotenv>=1.0", "smartapi-python>=1.5.5", "pyotp>=2.9", "logzero>=1.7", "statsmodels==0.15.0"]
+dependencies = ["numpy>=1.26", "pandas>=2.1", "pyarrow>=14", "python-dotenv>=1.0", "smartapi-python>=1.5.5", "pyotp>=2.9", "logzero>=1.7", "websocket-client>=1.8", "statsmodels==0.15.0"]
 
 [project.optional-dependencies]
 selection = ["statsmodels==0.15.0"]
