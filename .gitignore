@@ -3,5 +3,13 @@ __pycache__/
 .pytest_cache/
 .venv/
 build/
+src/*.egg-info/
 .DS_Store
 results/*.tmp
+local-data/
+data/raw/
+data/processed/
+
+.env
+.env.*
+!.env.example

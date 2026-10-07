@@ -25,8 +25,11 @@ def main(output_dir: str = "results") -> None:
     eg = engle_granger(y, x)
     kalman = kalman_hedge_ratio(y, x)
     z = rolling_zscore(kalman.spread, window=60)
-    spread_returns = kalman.spread.diff().fillna(0.0) / y.shift(1).replace(0, np.nan)
-    backtest = backtest_spread(z, spread_returns, entry_z=2.0, exit_z=0.5, cost_bps=2.0)
+    beta = kalman.beta.reindex(x.index).ffill()
+    backtest = backtest_spread(
+        z, entry_z=2.0, exit_z=0.5, cost_bps=2.0,
+        open_a=x, open_b=y, hedge_ratio=beta,
+    )
     summary = {
         "status": "synthetic_demo",
         "warning": "Synthetic data only; results are a pipeline smoke test, not a trading claim.",

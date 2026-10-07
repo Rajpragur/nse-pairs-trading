@@ -1,0 +1,65 @@
+{
+  "study": {
+    "id": "nse_top150_frozen_holdout_v1",
+    "description": "Frozen NSE equity pairs research scaffold using a point-in-time top-150 liquidity proxy; not a claim of Nifty index membership.",
+    "seed": 20261006,
+    "universe": {
+      "kind": "historical_liquidity_proxy",
+      "top_n": 150,
+      "lookback_months": 6,
+      "ranking": "median_daily_close_times_volume",
+      "effective_lag": "next_session",
+      "minimum_observations": 60,
+      "survivorship_requirement": "include delisted/historical securities where available; current constituents alone are insufficient"
+    },
+    "windows": {
+      "formation": {"start": "2016-01-01", "end": "2020-12-31"},
+      "validation": {"start": "2021-01-01", "end": "2022-12-31"},
+      "holdout": {"start": "2023-01-01", "end": "2024-12-31"}
+    },
+    "selection": {
+      "method": "engle_granger",
+      "trend": "c",
+      "maxlag": null,
+      "autolag": "aic",
+      "fdr": 0.05,
+      "min_observations": 252,
+      "rolling_window": 60,
+      "max_rolling_beta_std": 0.5,
+      "selection_must_use_formation_only": true,
+      "pvalue_source": "statsmodels.tsa.stattools.coint MacKinnon approximation; post-selection inference remains exploratory"
+    },
+    "strategy": {
+      "signal": "rolling_spread_zscore",
+      "lookback_sessions": 60,
+      "entry_z": 2.0,
+      "exit_z": 0.5,
+      "hedge_ratio": "formation_fitted_and_frozen_for_holdout",
+      "holdout_starts_flat": true
+    },
+    "execution": {
+      "signal": "close",
+      "fill": "next_session_open",
+      "return_interval": "open_to_open_after_fill",
+      "one_session_return": "open[T+2]/open[T+1]-1",
+      "missing_bars": "reject_without_forward_fill"
+    },
+    "costs": {
+      "aggregate_bps_per_leg_turnover": 10.0,
+      "slippage_bps_per_leg_turnover": 5.0,
+      "note": "Explicit sensitivity assumptions only; replace with documented instrument- and date-specific fees/taxes/slippage."
+    },
+    "reporting": {
+      "include_failed_and_null_outcomes": true,
+      "include_coverage_missingness_corporate_actions_and_survivorship_limits": true,
+      "performance_claim_requires_manifest_pinned_dataset_and_config": true
+    }
+  },
+  "data": {
+    "path": "../local-data/REPLACE_WITH_AUTHORIZED_OHLCV.csv",
+    "manifest": "../local-data/REPLACE_WITH_AUTHORIZED_OHLCV.csv.manifest.json"
+  },
+  "outputs": {
+    "run_manifest": "../../results/frozen_study_run_manifest.json"
+  }
+}

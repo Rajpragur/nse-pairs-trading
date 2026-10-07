@@ -18,6 +18,7 @@ int main() {
     const auto result = pairs::engle_granger(y, x);
     const auto finish = std::chrono::steady_clock::now();
     const auto elapsed = std::chrono::duration<double, std::milli>(finish - start).count();
-    std::cout << "intercept=" << result.intercept << " beta=" << result.beta << " adf_t=" << result.adf_t_stat << "\n";
+    const double adf_t_stat = pairs::engle_granger_adf_t_stat(result);
+    std::cout << "intercept=" << result.intercept << " beta=" << result.beta << " adf_t=" << adf_t_stat << "\n";
     std::cout << "observations=" << n << " elapsed_ms=" << elapsed << "\n";
 }

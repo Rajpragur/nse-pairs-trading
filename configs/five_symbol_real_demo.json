@@ -1,0 +1,95 @@
+{
+  "study": {
+    "id": "five_symbol_real_data_pipeline_demo_v1",
+    "description": "Exploratory machinery demonstration on five local Angel One daily OHLCV symbols; not a performance claim.",
+    "seed": 20261006,
+    "symbols": [
+      "RELIANCE-EQ",
+      "ABB-EQ",
+      "ABCAPITAL-EQ",
+      "ADANIENSOL-EQ",
+      "ADANIENT-EQ"
+    ],
+    "windows": {
+      "formation": {
+        "start": "2018-01-01",
+        "end": "2021-12-31"
+      },
+      "validation": {
+        "start": "2022-01-01",
+        "end": "2023-12-31"
+      },
+      "holdout": {
+        "start": "2024-01-01",
+        "end": "2026-09-30"
+      }
+    },
+    "selection": {
+      "method": "engle_granger",
+      "trend": "c",
+      "autolag": "aic",
+      "fdr": 0.10,
+      "min_observations": 252,
+      "rolling_window": 60,
+      "max_rolling_beta_std": 0.5,
+      "selection_must_use_formation_only": true,
+      "fdr_levels": [
+        0.05,
+        0.1
+      ],
+      "non_overlapping_pairs": true
+    },
+    "strategy": {
+      "spread": "log(close_a) - (intercept + beta * log(close_b)); intercept and beta fitted on formation only",
+      "zscore": "rolling 60 sessions, trailing values including current close; ddof=0",
+      "lookback_sessions": 60,
+      "entry_z": 2.0,
+      "exit_z": 0.5,
+      "holdout_starts_flat": true
+    },
+    "execution": {
+      "signal": "close",
+      "fill": "next_session_open",
+      "return_interval": "open_to_open_after_fill",
+      "missing_bars": "reject; no forward-fill",
+      "pair_sizing": "fixed gross 1.0 per active pair, leg weights normalized by absolute formation beta"
+    },
+    "costs": {
+      "brokerage_bps_per_leg_turnover": 10.0,
+      "slippage_bps_per_leg_turnover": 5.0,
+      "total_bps_per_leg_turnover": 15.0,
+      "note": "Illustrative assumptions, not verified Angel One tariffs; excludes statutory charges, taxes, financing, borrow availability/costs, market impact and price limits. Applied to each leg's absolute notional turnover."
+    },
+    "metrics": [
+      "formation_spread_stats",
+      "validation_spread_stats",
+      "holdout_spread_stats",
+      "zscore_entry_exit_counts",
+      "net_pnl",
+      "annualized_sharpe",
+      "max_drawdown"
+    ],
+    "data": {
+      "provider": "Angel One SmartAPI local fetch output",
+      "price_semantics": "raw_unadjusted_as_returned_by_smartapi; not corporate-action adjusted",
+      "authorized_use_status": "not verified by this run; user must confirm applicable data terms"
+    },
+    "cost_sensitivity_bps": {
+      "low": {
+        "brokerage": 5.0,
+        "slippage": 2.0
+      },
+      "base": {
+        "brokerage": 10.0,
+        "slippage": 5.0
+      },
+      "high": {
+        "brokerage": 20.0,
+        "slippage": 10.0
+      }
+    }
+  },
+  "outputs": {
+    "directory": "../local-data/five-symbol-real-run"
+  }
+}

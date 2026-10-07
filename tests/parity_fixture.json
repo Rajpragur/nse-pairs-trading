@@ -1,0 +1,7 @@
+{
+  "provenance": "local synthetic parity fixture; deterministic formula in test_cpp_parity.py and cpp/test_pairs.cpp",
+  "intercept": -60.1894031564033,
+  "beta": 1.2689508618001466,
+  "adf_t_stat": -3.2348351594757765,
+  "half_life": 2.768876852350559
+}
